@@ -22,7 +22,9 @@ defmodule DemoWeb.Router do
 
     live "/counter", CounterLive
 
-    live "/counter/say-hello", CounterLive, as: "say_hello_live"
+    live "/counter/confirm-reset", CounterLive,
+      session: [:val],
+      as: "confirm_reset_live"
 
     live "/examples", LiveComponentExamples
 
