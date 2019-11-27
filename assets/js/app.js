@@ -1,71 +1,46 @@
-import css from "../css/app.css";
-import "phoenix_html"
-import {Socket} from "phoenix"
-import {LiveSocket, debug, View} from "phoenix_live_view"
+import css from '../css/app.css'
+import 'phoenix_html'
+import { Socket } from 'phoenix'
+import { LiveSocket } from 'phoenix_live_view'
 
-let Hooks = {}
+// Define hooks
+const Hooks = {}
 
-Hooks.PhoneNumber = {
-  mounted(){
-    let pattern = /^(\d{3})(\d{3})(\d{4})$/
-    this.el.addEventListener("input", e => {
-      let match = this.el.value.replace(/\D/g, "").match(pattern)
-      if(match) {
-        this.el.value = `${match[1]}-${match[2]}-${match[3]}`
-      }
-    })
+Hooks.ScrollLock = {
+  mounted () {
+    this.lockScroll()
+  },
+  destroyed () {
+    this.unlockScroll()
+  },
+  lockScroll () {
+    // From https://github.com/excid3/tailwindcss-stimulus-components/blob/master/src/modal.js
+    // Add right padding to the body so the page doesn't shift when we disable scrolling
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth
+    document.body.style.paddingRight = `${scrollbarWidth}px`
+    // Save the scroll position
+    this.scrollPosition = window.pageYOffset || document.body.scrollTop
+    // Add classes to body to fix its position
+    document.body.classList.add('fixed', 'inset-x-0', 'overflow-hidden')
+    // Add negative top position in order for body to stay in place
+    document.body.style.top = `-${this.scrollPosition}px`
+  },
+  unlockScroll () {
+    // From https://github.com/excid3/tailwindcss-stimulus-components/blob/master/src/modal.js
+    // Remove tweaks for scrollbar
+    document.body.style.paddingRight = null
+    // Remove classes from body to unfix position
+    document.body.classList.remove('fixed', 'inset-x-0', 'overflow-hidden')
+    // Restore the scroll position of the body before it got locked
+    document.documentElement.scrollTop = this.scrollPosition
+    // Remove the negative top inline style from body
+    document.body.style.top = null
   }
 }
 
-let scrollAt = () => {
-  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-  let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-  let clientHeight = document.documentElement.clientHeight
-
-  return scrollTop / (scrollHeight - clientHeight) * 100
-}
-
-Hooks.InfiniteScroll = {
-  page() { return this.el.dataset.page },
-  mounted(){
-    this.pending = this.page()
-    window.addEventListener("scroll", e => {
-      if(this.pending == this.page() && scrollAt() > 90){
-        this.pending = this.page() + 1
-        this.pushEvent("load-more", {})
-      }
-    })
-  },
-  updated(){ this.pending = this.page() }
-}
-
-let serializeForm = (form) => {
-  let formData = new FormData(form)
-  let params = new URLSearchParams()
-  for(let [key, val] of formData.entries()){ params.append(key, val) }
-
-  return params.toString()
-}
-
-let Params = {
-  data: {},
-  set(namespace, key, val){
-    if(!this.data[namespace]){ this.data[namespace] = {}}
-    this.data[namespace][key] = val
-  },
-  get(namespace){ return this.data[namespace] || {} }
-}
-
-Hooks.SavedForm = {
-  mounted(){
-    this.el.addEventListener("input", e => {
-      Params.set(this.viewName, "stashed_form", serializeForm(this.el))
-    })
-  }
-}
-
-
-let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks})
+let liveSocket = new LiveSocket('/live', Socket, {
+  hooks: Hooks
+})
 
 liveSocket.connect()
-
