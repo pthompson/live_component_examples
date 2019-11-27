@@ -81,6 +81,23 @@ defmodule DemoWeb do
     end
   end
 
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
+      import Phoenix.HTML.Link, only: [link: 2]
+
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
+      import DemoWeb.ErrorHelpers
+      import DemoWeb.Gettext
+      alias DemoWeb.Router.Helpers, as: Routes
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
