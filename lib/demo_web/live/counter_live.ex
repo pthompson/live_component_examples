@@ -3,15 +3,30 @@ defmodule DemoWeb.CounterLive do
 
   def render(assigns) do
     ~L"""
-    <%= if not @confirm_reset do %>
     <div>
       <h1>The count is: <span><%= @val %></span></h1>
-      <button phx-click="reset" class="alert-danger">RESET</button>
+      <button phx-click="set">Set</button>
       <button phx-click="dec">-</button>
       <button phx-click="inc">+</button>
     </div>
-    <% else %>
-    <h1>CONFIRM RESET</h1>
+    <%= if @set_count do %>
+    <div>
+      <div class="modal-container">
+        <div class="modal-inner-container">
+          <div class="modal-card">
+          <div class="modal-form">
+            <%= f = form_for :counter, "#", [phx_submit: :set_count] %>
+              <%= label f, "Set Count" %>
+              <%= number_input f, :count %>
+              <div>
+                <%= submit "Set", phx_disable_with: "Setting..." %>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <% end %>
     """
   end
@@ -26,13 +41,13 @@ defmodule DemoWeb.CounterLive do
   def handle_params(_params, _uri, "counter", socket) do
     IO.puts("IN HANDLE PARAMS, counter")
 
-    {:noreply, assign(socket, confirm_reset: false)}
+    {:noreply, assign(socket, set_count: false)}
   end
 
-  def handle_params(_params, _uri, "confirm-reset", socket) do
-    IO.puts("IN HANDLE PARAMS, confirm-reset")
+  def handle_params(_params, _uri, "set-count", socket) do
+    IO.puts("IN HANDLE PARAMS, set-count")
 
-    {:noreply, assign(socket, confirm_reset: true)}
+    {:noreply, assign(socket, set_count: true)}
   end
 
   def handle_event("inc", _, socket) do
@@ -43,12 +58,12 @@ defmodule DemoWeb.CounterLive do
     {:noreply, update(socket, :val, &(&1 - 1))}
   end
 
-  def handle_event("reset", _, socket) do
+  def handle_event("set", _, socket) do
     {:noreply,
      live_redirect(
        socket
-       |> assign(confirm_reset: true),
-       to: Routes.confirm_reset_live_path(socket, DemoWeb.CounterLive),
+       |> assign(set_count: true),
+       to: Routes.set_count_live_path(socket, DemoWeb.CounterLive),
        replace: false
      )}
   end
@@ -97,6 +112,7 @@ defmodule DemoWeb.CounterLive do
     |> URI.parse()
     |> Map.get(:path)
     |> String.split("/")
+    |> Enum.reject(&(&1 == ""))
     |> List.last()
   end
 end
