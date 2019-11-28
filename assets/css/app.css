@@ -2,20 +2,6 @@
 @import "./phoenix.css";
 @import "./live_view.css";
 
-pre {
-  padding: 1em;
-}
-
-.modal-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 900;
-}
-
 .modal-container {
   position: fixed;
   top: 0;
@@ -32,26 +18,54 @@ pre {
 
 .modal-inner-container {
   position: relative;
-  max-height: 100vh;
-  width: 100%;
-  max-width: 32rem;
+  height: auto;
+  width: 28rem;
+  max-width: 51rem;
+  z-index: 999;
 }
 
 .modal-card {
-  margin: 0.25rem;
-  border-radius: 0.25rem;
+  margin: 0.5rem;
+  border-radius: 0.4rem;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  /* box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); */
 }
 
-.modal-form {
-  padding-top: 3rem;
-  padding-bottom: 1.5rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+.modal-inner-card {
+  padding-top: 1.5rem;
+  padding-bottom: 1.25rem;
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
 }
 
-/* 'rgba(0, 0, 0, 0.7)' */
-.modal {
-  z-index: 999;
+.modal-title {
+  color: #0069d9;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.075em;
+}
+
+.modal-body {
+  margin-top: 0.8rem;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.left-button {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.right-button {
+  margin-left: .6rem;
 }
