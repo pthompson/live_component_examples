@@ -1,9 +1,6 @@
 defmodule DemoWeb.LiveComponent.ModalLive do
   @moduledoc """
-  This is a general modal component with a title, body text, and either
-  one or two buttons. Many aspects of the modal can be customized, including
-  colors, button labels, and title and body text. Application wide defaults
-  are specified for the colors and button texts.
+  This is a general modal component with title, body text, and two buttons.
 
   A required action string and optional parameter are provided for each
   button when the modal is initialized. These will be returned to the caller
@@ -12,30 +9,28 @@ defmodule DemoWeb.LiveComponent.ModalLive do
   The caller must have message handlers defined for each button that takes
   the given action and parameter for each button. For example:
 
-    def handle_info(
-      {ModalLive, :button_pressed, %{action: "remove-book", param: book_id_string}},
-      socket
-    )
+      def handle_info(
+        {ModalLive, :button_pressed, %{action: "crash", param: exception}},
+        socket
+      )
 
   This is a stateful component, so you MUST specify an id when calling
   live_component.
 
   The component can be called like:
 
-  <div id="confirm-book-removal">
-    <%= Phoenix.LiveView.live_component(@socket,
-                                        BooklistiWeb.LiveComponent.ModalLive,
-                                        id: "confirm-book-removal",
-                                        title: "Remove Book",
-                                        body: "Are you sure you want to remove the book?",
-                                        right_button: "OK",
-                                        right_button_action: "remove-book",
-                                        right_button_param: @remove_book_id,
-                                        left_button: "Cancel",
-                                        left_button_action: "cancel-remove-book"
-                                        )
-    %>
-  </div>
+      <%= live_component(@socket,
+                         ModalLive,
+                         id: "confirm-boom",
+                         title: "Go Boom?",
+                         body: "Are you sure you want to crash the counter?",
+                         right_button: "OK",
+                         right_button_action: "crash",
+                         right_button_param: "boom",
+                         left_button: "Cancel",
+                         left_button_action: "cancel-boom",
+                         left_button_param: nil)
+      %>
   """
 
   use DemoWeb, :live_component
@@ -75,7 +70,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
               <% end %>
 
               <!-- Buttons -->
-              <div class="flex modal-buttons">
+              <div class="modal-buttons">
                 <!-- Left Button -->
                 <button class="left-button"
                         type="button"
