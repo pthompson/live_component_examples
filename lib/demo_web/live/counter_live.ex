@@ -7,11 +7,11 @@ defmodule DemoWeb.CounterLive do
     <div>
       <h1>The count is: <span><%= @val %></span></h1>
       <button class="alert-danger"
-              phx-click="boom">Boom</button>
+              phx-click="go-boom">Boom</button>
       <button phx-click="dec">-</button>
       <button phx-click="inc">+</button>
     </div>
-    <%= if @prepare_to_crash do %>
+    <%= if @show_modal do %>
       <%= live_component(@socket,
                          ModalLive,
                          id: "confirm-boom",
@@ -21,7 +21,7 @@ defmodule DemoWeb.CounterLive do
                          right_button_action: "crash",
                          right_button_param: "boom",
                          left_button: "Cancel",
-                         left_button_action: "cancel-boom",
+                         left_button_action: "cancel-crash",
                          left_button_param: nil)
       %>
     <% end %>
@@ -36,18 +36,18 @@ defmodule DemoWeb.CounterLive do
     do: handle_params(params, uri, last_path_segment(uri), socket)
 
   def handle_params(_params, _uri, "counter", socket) do
-    {:noreply, assign(socket, prepare_to_crash: false)}
+    {:noreply, assign(socket, show_modal: false)}
   end
 
-  def handle_params(_params, _uri, "confirm-boom", %{assigns: %{prepare_to_crash: _}} = socket) do
-    {:noreply, assign(socket, prepare_to_crash: true)}
+  def handle_params(_params, _uri, "confirm-boom", %{assigns: %{show_modal: _}} = socket) do
+    {:noreply, assign(socket, show_modal: true)}
   end
 
   def handle_params(_params, _uri, "confirm-boom", socket) do
-    # Redirect to base counter path if prepare_to_crash not set, indicating that
-    # the counter hasn't been initialized which can happen if counter crashes or
-    # user comes in on counter/confirm-boom uri without going through /counter first
-    # (e.g., if they used a saved URL).
+    # Redirect to base counter path if show_modal not set, which indicates that
+    # the counter hasn't been initialized. This can happen user comes in on
+    #  /counter/confirm-boom uri without going through /counter first
+    # or if the counter crashed while on the confirm-boom URL.
     {:noreply,
      live_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLive),
@@ -63,7 +63,7 @@ defmodule DemoWeb.CounterLive do
     {:noreply, update(socket, :val, &(&1 - 1))}
   end
 
-  def handle_event("boom", _, socket) do
+  def handle_event("go-boom", _, socket) do
     {:noreply,
      live_redirect(
        socket,
@@ -83,7 +83,7 @@ defmodule DemoWeb.CounterLive do
 
   # Handle message to self() from Confirm Boom modal
   def handle_info(
-        {ModalLive, :button_pressed, %{action: "cancel-boom", param: nil}},
+        {ModalLive, :button_pressed, %{action: "cancel-crash"}},
         socket
       ) do
     {:noreply,

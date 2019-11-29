@@ -10,7 +10,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
   the given action and parameter for each button. For example:
 
       def handle_info(
-        {ModalLive, :button_pressed, %{action: "crash", param: exception}},
+        {ModalLive, :button_pressed, %{action: "delete", param: item_id}},
         socket
       )
 
