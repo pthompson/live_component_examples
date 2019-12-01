@@ -1,17 +1,28 @@
 defmodule DemoWeb.CounterLive do
   use DemoWeb, :live_view
+  alias DemoWeb.LiveComponent.ModalLive
 
   def render(assigns) do
     ~L"""
-    <%= if not @confirm_reset do %>
     <div>
       <h1>The count is: <span><%= @val %></span></h1>
-      <button phx-click="reset" class="alert-danger">RESET</button>
+      <button class="alert-danger"
+              phx-click="go-boom">Boom</button>
       <button phx-click="dec">-</button>
       <button phx-click="inc">+</button>
     </div>
-    <% else %>
-    <h1>CONFIRM RESET</h1>
+    <%= if @show_modal do %>
+      <%= live_component(@socket,
+                         ModalLive,
+                         id: "confirm-boom",
+                         title: "Go Boom",
+                         body: "Are you sure you want to crash the counter?",
+                         right_button: "Sure",
+                         right_button_action: "crash",
+                         right_button_param: "boom",
+                         left_button: "Yikes, No!",
+                         left_button_action: "cancel-crash")
+      %>
     <% end %>
     """
   end
@@ -24,15 +35,24 @@ defmodule DemoWeb.CounterLive do
     do: handle_params(params, uri, last_path_segment(uri), socket)
 
   def handle_params(_params, _uri, "counter", socket) do
-    IO.puts("IN HANDLE PARAMS, counter")
-
-    {:noreply, assign(socket, confirm_reset: false)}
+    {:noreply, assign(socket, show_modal: false)}
   end
 
-  def handle_params(_params, _uri, "confirm-reset", socket) do
-    IO.puts("IN HANDLE PARAMS, confirm-reset")
+  def handle_params(_params, _uri, "confirm-boom", %{assigns: %{show_modal: _}} = socket) do
+    {:noreply, assign(socket, show_modal: true)}
+  end
 
-    {:noreply, assign(socket, confirm_reset: true)}
+  def handle_params(_params, _uri, _last_path_segment, socket) do
+    # Redirect to base counter path if last_path_segment is unknown or if
+    # show_modal not set, which indicates that the counter hasn't been
+    # initialized. This can happen when user comes in on
+    # /counter/confirm-boom uri without going through /counter first
+    # or if the counter crashed while on the /counter/confirm-boom URL.
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, DemoWeb.CounterLive),
+       replace: true
+     )}
   end
 
   def handle_event("inc", _, socket) do
@@ -43,60 +63,41 @@ defmodule DemoWeb.CounterLive do
     {:noreply, update(socket, :val, &(&1 - 1))}
   end
 
-  def handle_event("reset", _, socket) do
+  def handle_event("go-boom", _, socket) do
     {:noreply,
      live_redirect(
-       socket
-       |> assign(confirm_reset: true),
-       to: Routes.confirm_reset_live_path(socket, DemoWeb.CounterLive),
+       socket,
+       to: Routes.confirm_boom_live_path(socket, DemoWeb.CounterLive),
        replace: false
      )}
   end
 
-  # Handle message to self() from Confirm Reset modal
-  # def handle_info(
-  #       {ModalLive, :button_pressed, %{action: "reset-counter", param: nil}},
-  #       socket
-  #     ) do
-  #   book_id = String.to_integer(book_id_string)
+  # Handle message to self() from Confirm Boom modal
+  def handle_info(
+        {ModalLive, :button_clicked, %{action: "crash", param: exception}},
+        socket
+      ) do
+    raise(exception)
+    {:noreply, socket}
+  end
 
-  #   booklist_book =
-  #     Enum.find(booklist_books, fn booklist_book ->
-  #       booklist_book.book.id == book_id
-  #     end)
-
-  #   Booklists.delete_booklist_book(booklist_book)
-
-  #   {:noreply,
-  #    live_redirect(
-  #      socket
-  #      |> assign(
-  #        display_mode: :edit_booklist_mode,
-  #        remove_book_title: nil,
-  #        remove_book_id: nil
-  #      ),
-  #      to: Routes.live_path(socket, BooklistLive.Edit, booklist),
-  #      replace: false
-  #    )}
-  # end
-
-  # # Handle message to self() from Confirm Reset modal
-  # def handle_info(
-  #       {ModalLive, :button_pressed, %{action: "cancel-reset-counter", param: nil}},
-  #       socket
-  #     ) do
-  #   {:noreply,
-  #    live_redirect(socket |> assign(display_mode: :edit_booklist_mode),
-  #      to: Routes.live_path(socket, BooklistLive.Edit, booklist),
-  #      replace: false
-  #    )}
-  # end
+  # Handle message to self() from Confirm Boom modal
+  def handle_info(
+        {ModalLive, :button_clicked, %{action: "cancel-crash"}},
+        socket
+      ) do
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, DemoWeb.CounterLive),
+       replace: false
+     )}
+  end
 
   defp last_path_segment(uri) do
     uri
     |> URI.parse()
     |> Map.get(:path)
-    |> String.split("/")
+    |> String.split("/", trim: true)
     |> List.last()
   end
 end

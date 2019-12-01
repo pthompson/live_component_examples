@@ -5,7 +5,7 @@ defmodule DemoWeb.LiveComponentExamples do
     ~L"""
     <section class="row">
       <article class="column">
-        <h4>LiveComponent Examples</h4>
+        <h4>Simple LiveComponent Examples</h4>
         <ul>
           <li><%= live_link("Static Title Example", to: Routes.live_path(@socket, DemoWeb.StaticTitleLiveView)) %></li>
           <li><%= live_link("Assigns Title Example", to: Routes.live_path(@socket, DemoWeb.AssignsTitleLiveView)) %></li>

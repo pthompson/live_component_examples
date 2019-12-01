@@ -66,13 +66,8 @@ defmodule DemoWeb do
   def live_view do
     quote do
       use Phoenix.LiveView
-
       import Phoenix.LiveView
 
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-      import Phoenix.HTML.Link, only: [link: 2]
-
-      # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
       import DemoWeb.ErrorHelpers
@@ -85,11 +80,6 @@ defmodule DemoWeb do
     quote do
       use Phoenix.LiveComponent
 
-      # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-      import Phoenix.HTML.Link, only: [link: 2]
-
-      # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
       import DemoWeb.ErrorHelpers
