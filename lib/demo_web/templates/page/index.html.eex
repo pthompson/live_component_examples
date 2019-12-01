@@ -3,10 +3,10 @@
 </section>
 <section class="row">
   <article class="column">
-    <h4>LiveView Examples</h4>
+    <h4>LiveView LiveComponent Examples</h4>
     <ul>
-      <li><%= link "Counter", to: Routes.live_path(@conn, DemoWeb.CounterLive) %></li>
-      <li><a href="/examples">LiveComponent Examples</a></li>
+      <li><a href="/examples">Simple LiveComponent Examples</a></li>
+      <li><%= link "Modal LiveComponent Example", to: Routes.live_path(@conn, DemoWeb.CounterLive) %></li>
     </ul>
   </article>
 </section>

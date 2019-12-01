@@ -10,7 +10,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
   the given action and parameter for each button. For example:
 
       def handle_info(
-        {ModalLive, :button_pressed, %{action: "delete", param: item_id}},
+        {ModalLive, :button_clicked, %{action: "delete", param: item_id}},
         socket
       )
 
@@ -32,8 +32,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
                          left_button_param: nil)
       %>
   """
-
-  use DemoWeb, :live_component
+  use Phoenix.LiveComponent
 
   @defaults %{
     left_button: "Cancel",
@@ -51,7 +50,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
     <div>
       <!-- Modal Background -->
       <div class="modal-container"
-         phx-hook="ScrollLock">
+          phx-hook="ScrollLock">
         <div class="modal-inner-container">
           <div class="modal-card">
             <div class="modal-inner-card">
@@ -96,14 +95,20 @@ defmodule DemoWeb.LiveComponent.ModalLive do
     """
   end
 
-  @spec mount(map, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_session, socket) do
     {:ok, socket}
   end
 
-  @spec update(map, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
-    {:ok, assign(socket, Map.merge(assigns, @defaults, fn _k, v1, _v2 -> v1 end))}
+    {:ok,
+     socket
+     |> assign(
+       Map.merge(
+         assigns,
+         @defaults,
+         fn _key, assign, _default -> assign end
+       )
+     )}
   end
 
   # Fired when user clicks right button on modal
@@ -119,7 +124,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
       ) do
     send(
       self(),
-      {__MODULE__, :button_pressed, %{action: right_button_action, param: right_button_param}}
+      {__MODULE__, :button_clicked, %{action: right_button_action, param: right_button_param}}
     )
 
     {:noreply, socket}
@@ -137,7 +142,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
       ) do
     send(
       self(),
-      {__MODULE__, :button_pressed, %{action: left_button_action, param: left_button_param}}
+      {__MODULE__, :button_clicked, %{action: left_button_action, param: left_button_param}}
     )
 
     {:noreply, socket}

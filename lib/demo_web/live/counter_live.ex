@@ -15,14 +15,13 @@ defmodule DemoWeb.CounterLive do
       <%= live_component(@socket,
                          ModalLive,
                          id: "confirm-boom",
-                         title: "Go Boom?",
+                         title: "Go Boom",
                          body: "Are you sure you want to crash the counter?",
-                         right_button: "OK",
+                         right_button: "Sure",
                          right_button_action: "crash",
                          right_button_param: "boom",
-                         left_button: "Cancel",
-                         left_button_action: "cancel-crash",
-                         left_button_param: nil)
+                         left_button: "Yikes, No!",
+                         left_button_action: "cancel-crash")
       %>
     <% end %>
     """
@@ -43,11 +42,12 @@ defmodule DemoWeb.CounterLive do
     {:noreply, assign(socket, show_modal: true)}
   end
 
-  def handle_params(_params, _uri, "confirm-boom", socket) do
-    # Redirect to base counter path if show_modal not set, which indicates that
-    # the counter hasn't been initialized. This can happen user comes in on
-    #  /counter/confirm-boom uri without going through /counter first
-    # or if the counter crashed while on the confirm-boom URL.
+  def handle_params(_params, _uri, _last_path_segment, socket) do
+    # Redirect to base counter path if last_path_segment is unknown or if
+    # show_modal not set, which indicates that the counter hasn't been
+    # initialized. This can happen when user comes in on
+    # /counter/confirm-boom uri without going through /counter first
+    # or if the counter crashed while on the /counter/confirm-boom URL.
     {:noreply,
      live_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLive),
@@ -74,7 +74,7 @@ defmodule DemoWeb.CounterLive do
 
   # Handle message to self() from Confirm Boom modal
   def handle_info(
-        {ModalLive, :button_pressed, %{action: "crash", param: exception}},
+        {ModalLive, :button_clicked, %{action: "crash", param: exception}},
         socket
       ) do
     raise(exception)
@@ -83,7 +83,7 @@ defmodule DemoWeb.CounterLive do
 
   # Handle message to self() from Confirm Boom modal
   def handle_info(
-        {ModalLive, :button_pressed, %{action: "cancel-crash"}},
+        {ModalLive, :button_clicked, %{action: "cancel-crash"}},
         socket
       ) do
     {:noreply,
@@ -97,8 +97,7 @@ defmodule DemoWeb.CounterLive do
     uri
     |> URI.parse()
     |> Map.get(:path)
-    |> String.split("/")
-    |> Enum.reject(&(&1 == ""))
+    |> String.split("/", trim: true)
     |> List.last()
   end
 end
