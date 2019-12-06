@@ -100,15 +100,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
   end
 
   def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(
-       Map.merge(
-         assigns,
-         @defaults,
-         fn _key, assign, _default -> assign end
-       )
-     )}
+    {:ok, assign(socket, Map.merge(@defaults, assigns))}
   end
 
   # Fired when user clicks right button on modal
