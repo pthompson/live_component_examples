@@ -1,20 +1,21 @@
+# LiveComponents Examples
+
+Here you will find the code from the article:
+
+[`Introduction to Phoenix LiveView LiveComponents`](http://blog.pthompson.org/liveview-livecomponents-introduction)
+
+
 # Demo
 
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   * Install Node.js dependencies with `cd assets && npm install && cd ..`
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# License
 
-## Learn more
+This package is available as open source under the terms of the MIT License.
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
