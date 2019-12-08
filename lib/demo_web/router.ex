@@ -26,6 +26,12 @@ defmodule DemoWeb.Router do
       session: [:val],
       as: "confirm_boom_live"
 
+    live "/counter-with-set", CounterLiveWithSetForm
+
+    live "/counter-with-set/set-counter", CounterLiveWithSetForm,
+      session: [:val],
+      as: "set_counter_live"
+
     live "/examples", LiveComponentExamples
 
     live "/examples/static-title", StaticTitleLiveView

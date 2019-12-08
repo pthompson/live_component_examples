@@ -18,13 +18,13 @@
 
 .modal-inner-container {
   position: relative;
-  height: auto;
-  width: 28rem;
-  max-width: 51rem;
   z-index: 999;
 }
 
 .modal-card {
+  height: auto;
+  width: 28rem;
+  max-width: 51rem;
   margin: 0.5rem;
   border-radius: 0.4rem;
   background-color: #fff;
@@ -44,6 +44,16 @@
   font-weight: 600;
   font-size: 1.5rem;
   letter-spacing: 0.075em;
+}
+
+.modal-form-title {
+  color: #000;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.075em;
+  margin-bottom: 1.75rem;
 }
 
 .modal-body {
