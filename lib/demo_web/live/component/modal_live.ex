@@ -95,7 +95,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(socket) do
     {:ok, socket}
   end
 
