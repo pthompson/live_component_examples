@@ -8,7 +8,7 @@ defmodule DemoWeb.ComponentBlocksComponent do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(socket) do
     {:ok, socket}
   end
 
