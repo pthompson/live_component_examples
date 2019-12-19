@@ -1,6 +1,6 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
-@import "./live_view.css";
+@import './phoenix.css';
+@import './live_view.css';
 
 .modal-container {
   position: fixed;
@@ -32,7 +32,7 @@
 
 .modal-inner-card {
   padding-top: 1rem;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   padding-left: 2.25rem;
   padding-right: 2.25rem;
 }
@@ -76,7 +76,7 @@
 }
 
 .right-button {
-  margin-left: .6rem;
+  margin-left: 0.6rem;
 }
 
 .fix-position {

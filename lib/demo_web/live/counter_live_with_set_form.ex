@@ -19,9 +19,9 @@ defmodule DemoWeb.CounterLiveWithSetForm do
   def render_modal_form(assigns, title: title, value: value) do
     ~L"""
     <%= live_component @socket,
-                       ModalBackgroundLive,
-                       title: title,
-                       value: value do %>
+                        ModalBackgroundLive,
+                        title: title,
+                        value: value do %>
       <div class="modal-card">
         <div class="modal-inner-card">
           <!-- Title -->
@@ -55,14 +55,19 @@ defmodule DemoWeb.CounterLiveWithSetForm do
     {:noreply, assign(socket, show_modal: false)}
   end
 
-  def handle_params(_params, _uri, "set-counter", %{assigns: %{show_modal: _}} = socket) do
+  def handle_params(
+        _params,
+        _uri,
+        "set-counter",
+        %{assigns: %{show_modal: _}} = socket
+      ) do
     {:noreply, assign(socket, show_modal: true)}
   end
 
   def handle_params(_params, _uri, _last_path_segment, socket) do
     {:noreply,
      live_redirect(socket,
-       to: Routes.live_path(socket, DemoWeb.CounterLiveWithSetForm),
+       to: Routes.live_path(socket, CounterLiveWithSetForm),
        replace: true
      )}
   end
@@ -79,7 +84,7 @@ defmodule DemoWeb.CounterLiveWithSetForm do
     {:noreply,
      live_redirect(
        socket,
-       to: Routes.set_counter_live_path(socket, DemoWeb.CounterLiveWithSetForm),
+       to: Routes.set_counter_live_path(socket, CounterLiveWithSetForm),
        replace: false
      )}
   end
@@ -91,7 +96,7 @@ defmodule DemoWeb.CounterLiveWithSetForm do
       ) do
     {:noreply,
      live_redirect(assign(socket, val: count),
-       to: Routes.live_path(socket, DemoWeb.CounterLiveWithSetForm),
+       to: Routes.live_path(socket, CounterLiveWithSetForm),
        replace: false
      )}
   end
