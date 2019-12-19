@@ -20,7 +20,6 @@ defmodule DemoWeb.LiveComponentExamples do
     """
   end
 
-  @spec mount(map, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_session, socket) do
     {:ok, socket}
   end

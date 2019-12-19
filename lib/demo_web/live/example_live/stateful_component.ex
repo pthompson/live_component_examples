@@ -16,7 +16,7 @@ defmodule DemoWeb.StatefulComponent do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(socket) do
     {:ok, socket}
   end
 
