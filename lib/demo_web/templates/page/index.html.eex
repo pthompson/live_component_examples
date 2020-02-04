@@ -7,6 +7,7 @@
     <ul>
       <li><a href="/examples">Simple LiveComponent Examples</a></li>
       <li><%= link "Modal LiveComponent Example", to: Routes.live_path(@conn, DemoWeb.CounterLive) %></li>
+      <li><%= link "Modal LiveComponent With Set Example", to: Routes.live_path(@conn, DemoWeb.CounterLiveWithSetForm) %></li>
     </ul>
   </article>
 </section>
