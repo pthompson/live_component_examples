@@ -35,7 +35,7 @@ defmodule Demo.Mixfile do
     [
       {:phoenix, "~> 1.4.9"},
       {:phoenix_live_view,
-       git: "https://github.com/phoenixframework/phoenix_live_view.git", tag: "v0.4.1"},
+       git: "https://github.com/phoenixframework/phoenix_live_view.git", tag: "v0.6.0"},
       {:plug_cowboy, "~> 2.0"},
       {:plug, "~> 1.8"},
       {:phoenix_pubsub, "~> 1.1"},

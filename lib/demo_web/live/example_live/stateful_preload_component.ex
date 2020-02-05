@@ -5,8 +5,8 @@ defmodule DemoWeb.StatefulPreloadComponent do
   def render(assigns) do
     ~L"""
     <h2><%= @title %></h2>
-    <div>
-    <%= f = form_for :heading, "#", [phx_submit: :set_title] %>
+    <div id="preload-<%= @id %>">
+    <%= f = form_for :heading, "#", [phx_submit: :set_title, "phx-target": "#preload-#{@id}"] %>
       <%= label f, :title %>
       <%= text_input f, :title %>
       <div>
@@ -20,10 +20,11 @@ defmodule DemoWeb.StatefulPreloadComponent do
     {:ok, socket}
   end
 
-  def update(%{title: title}, socket) do
+  def update(%{title: title, id: id}, socket) do
     {:ok,
      assign(socket,
-       title: title
+       title: title,
+       id: id
      )}
   end
 

@@ -47,7 +47,7 @@ defmodule DemoWeb.LiveComponent.ModalLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~L"""
-    <div>
+    <div id="modal-<%= @id %>">
       <!-- Modal Background -->
       <div class="modal-container"
           phx-hook="ScrollLock">
@@ -73,7 +73,8 @@ defmodule DemoWeb.LiveComponent.ModalLive do
                 <!-- Left Button -->
                 <button class="left-button"
                         type="button"
-                        phx-click="left-button-click">
+                        phx-click="left-button-click"
+                        phx-target="#modal-<%= @id %>">
                   <div>
                     <%= @left_button %>
                   </div>
@@ -81,7 +82,8 @@ defmodule DemoWeb.LiveComponent.ModalLive do
                 <!-- Right Button -->
                 <button class="right-button"
                         type="button"
-                        phx-click="right-button-click">
+                        phx-click="right-button-click"
+                        phx-target="#modal-<%= @id %>">
                   <div>
                     <%= @right_button %>
                   </div>
@@ -95,11 +97,11 @@ defmodule DemoWeb.LiveComponent.ModalLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(socket) do
     {:ok, socket}
   end
 
-  def update(assigns, socket) do
+  def update(%{id: _id} = assigns, socket) do
     {:ok, assign(socket, Map.merge(@defaults, assigns))}
   end
 

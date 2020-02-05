@@ -27,7 +27,7 @@ defmodule DemoWeb.CounterLive do
     """
   end
 
-  def mount(session, socket) do
+  def mount(_params, session, socket) do
     {:ok, assign(socket, val: session[:val] || 0)}
   end
 
@@ -89,7 +89,7 @@ defmodule DemoWeb.CounterLive do
     {:noreply,
      live_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLive),
-       replace: false
+       replace: true
      )}
   end
 

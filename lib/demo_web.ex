@@ -23,7 +23,7 @@ defmodule DemoWeb do
 
       import Plug.Conn
       import DemoWeb.Gettext
-      import Phoenix.LiveView.Controller, only: [live_render: 3]
+      import Phoenix.LiveView.Helpers
       alias DemoWeb.Router.Helpers, as: Routes
     end
   end
@@ -44,7 +44,7 @@ defmodule DemoWeb do
       import DemoWeb.Gettext
       alias DemoWeb.Router.Helpers, as: Routes
 
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
+      import Phoenix.LiveView.Helpers
     end
   end
 
@@ -66,7 +66,8 @@ defmodule DemoWeb do
   def live_view do
     quote do
       use Phoenix.LiveView
-      import Phoenix.LiveView
+
+      import Phoenix.LiveView.Helpers
 
       use Phoenix.HTML
 
@@ -82,6 +83,7 @@ defmodule DemoWeb do
 
       use Phoenix.HTML
 
+      import Phoenix.LiveView.Helpers
       import DemoWeb.ErrorHelpers
       import DemoWeb.Gettext
       alias DemoWeb.Router.Helpers, as: Routes
