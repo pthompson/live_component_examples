@@ -15,7 +15,7 @@ defmodule DemoWeb.StatefulSendSelfComponentLiveView do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
        title: "Initial Title"

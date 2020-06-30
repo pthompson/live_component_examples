@@ -21,7 +21,6 @@ defmodule DemoWeb.StatelessComponent do
   end
 
   def update(%{title: title}, socket) do
-    IO.puts("\n\n XXXXX in update title = #{title}\n\n")
     {:ok, assign(socket, title: title)}
   end
 end
