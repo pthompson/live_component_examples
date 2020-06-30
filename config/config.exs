@@ -3,29 +3,25 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-use Mix.Config
 
 # General application configuration
-config :demo,
-  ecto_repos: [Demo.Repo]
+use Mix.Config
 
 # Configures the endpoint
 config :demo, DemoWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "zlMbr9KIbSMRg9BXFBpsWgVUqeDm09NBI9124BQ8u+2R6ZRk9hcPe9iC4ciM5rZ4",
-  render_errors: [view: DemoWeb.ErrorView, accepts: ~w(html json)],
+  secret_key_base: "k/d0tiW1bKu2BIduJ9EZ4DZcCQzjnd36p1kgj17upbXPHiSxXORVbwB6nsvs4z7G",
+  render_errors: [view: DemoWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Demo.PubSub,
-  live_view: [signing_salt: "NZIguRPO"]
+  live_view: [signing_salt: "UfRw5YAi"]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix and Ecto
+# Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-
-config :phoenix, :template_engines, leex: Phoenix.LiveView.Engine
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

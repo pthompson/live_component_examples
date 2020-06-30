@@ -7,8 +7,10 @@ defmodule Demo.Application do
 
   def start(_type, _args) do
     children = [
+      # Start the Telemetry supervisor
+      DemoWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, [name: Demo.PubSub, adapter: Phoenix.PubSub.PG2]},
+      {Phoenix.PubSub, name: Demo.PubSub},
       # Start the Endpoint (http/https)
       DemoWeb.Endpoint
       # Start a worker by calling: Demo.Worker.start_link(arg)

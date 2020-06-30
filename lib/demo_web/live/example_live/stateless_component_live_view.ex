@@ -15,6 +15,8 @@ defmodule DemoWeb.StatelessComponentLiveView do
   end
 
   def mount(_session, socket) do
+    IO.puts("\n\n XXXXX live view mount\n\n")
+
     {:ok,
      assign(socket,
        title: "Initial Title"

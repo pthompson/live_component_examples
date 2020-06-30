@@ -1,0 +1,13 @@
+<section class="phx-hero">
+  <h2><%= gettext "Welcome to %{name}!", name: "Phoenix LiveView" %></h2>
+</section>
+<section class="row">
+  <article class="column">
+    <h4>LiveView LiveComponent Examples</h4>
+    <ul>
+      <li><a href="/examples">Simple LiveComponent Examples</a></li>
+      <li><%= link "Modal LiveComponent Example", to: Routes.live_path(@socket, DemoWeb.CounterLive) %></li>
+      <li><%= link "Modal LiveComponent With Set Example", to: Routes.live_path(@socket, DemoWeb.CounterLiveWithSetForm) %></li>
+    </ul>
+  </article>
+</section>
