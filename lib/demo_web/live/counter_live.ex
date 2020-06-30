@@ -49,7 +49,7 @@ defmodule DemoWeb.CounterLive do
     # /counter/confirm-boom uri without going through /counter first
     # or if the counter crashed while on the /counter/confirm-boom URL.
     {:noreply,
-     live_redirect(socket,
+     push_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLive),
        replace: true
      )}
@@ -65,7 +65,7 @@ defmodule DemoWeb.CounterLive do
 
   def handle_event("go-boom", _, socket) do
     {:noreply,
-     live_redirect(
+     push_redirect(
        socket,
        to: Routes.confirm_boom_live_path(socket, DemoWeb.CounterLive),
        replace: false
@@ -87,7 +87,7 @@ defmodule DemoWeb.CounterLive do
         socket
       ) do
     {:noreply,
-     live_redirect(socket,
+     push_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLive),
        replace: true
      )}

@@ -66,7 +66,7 @@ defmodule DemoWeb.CounterLiveWithSetForm do
 
   def handle_params(_params, _uri, _last_path_segment, socket) do
     {:noreply,
-     live_redirect(socket,
+     push_redirect(socket,
        to: Routes.live_path(socket, DemoWeb.CounterLiveWithSetForm),
        replace: true
      )}
@@ -82,7 +82,7 @@ defmodule DemoWeb.CounterLiveWithSetForm do
 
   def handle_event("set", _, socket) do
     {:noreply,
-     live_redirect(
+     push_redirect(
        socket,
        to: Routes.set_counter_live_path(socket, DemoWeb.CounterLiveWithSetForm),
        replace: false
@@ -95,7 +95,7 @@ defmodule DemoWeb.CounterLiveWithSetForm do
         socket
       ) do
     {:noreply,
-     live_redirect(assign(socket, val: String.to_integer(count)),
+     push_redirect(assign(socket, val: String.to_integer(count)),
        to: Routes.live_path(socket, DemoWeb.CounterLiveWithSetForm),
        replace: true
      )}
