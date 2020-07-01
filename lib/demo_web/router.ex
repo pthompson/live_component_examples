@@ -19,13 +19,9 @@ defmodule DemoWeb.Router do
 
     live "/", PageLive, :index
 
-    live "/counter", CounterLive
+    live "/counter", CounterLive, :show
 
-    live "/counter/confirm-boom", CounterLive, as: "confirm_boom_live"
-
-    live "/counter-with-set", CounterLiveWithSetForm
-
-    live "/counter-with-set/set-counter", CounterLiveWithSetForm, as: "set_counter_live"
+    live "/counter/confirm-boom", CounterLive, :confirm_boom
 
     live "/examples", LiveComponentExamples
 
