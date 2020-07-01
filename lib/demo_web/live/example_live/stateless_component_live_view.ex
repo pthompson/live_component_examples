@@ -14,15 +14,11 @@ defmodule DemoWeb.StatelessComponentLiveView do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
        title: "Initial Title"
      )}
-  end
-
-  def handle_params(_params, _uri, socket) do
-    {:noreply, socket}
   end
 
   def handle_event(

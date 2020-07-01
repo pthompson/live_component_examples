@@ -31,28 +31,28 @@ defmodule DemoWeb.CounterLive do
     {:ok, assign(socket, val: session[:val] || 0)}
   end
 
-  def handle_params(params, uri, socket),
-    do: handle_params(params, uri, last_path_segment(uri), socket)
-
-  def handle_params(_params, _uri, "counter", socket) do
-    {:noreply, assign(socket, show_modal: false)}
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  def handle_params(_params, _uri, "confirm-boom", %{assigns: %{show_modal: _}} = socket) do
-    {:noreply, assign(socket, show_modal: true)}
+  def apply_action(socket, :show, _params) do
+    assign(socket, show_modal: false)
   end
 
-  def handle_params(_params, _uri, _last_path_segment, socket) do
-    # Redirect to base counter path if last_path_segment is unknown or if
+  def apply_action(%{assigns: %{show_modal: _}} = socket, :confirm_boom, _params) do
+    assign(socket, show_modal: true)
+  end
+
+  def apply_action(socket, _live_action, _params) do
+    # Redirect to base counter path if live_action is unknown or if
     # show_modal not set, which indicates that the counter hasn't been
     # initialized. This can happen when user comes in on
     # /counter/confirm-boom uri without going through /counter first
     # or if the counter crashed while on the /counter/confirm-boom URL.
-    {:noreply,
-     live_redirect(socket,
-       to: Routes.live_path(socket, DemoWeb.CounterLive),
-       replace: true
-     )}
+    push_patch(socket,
+      to: Routes.counter_path(socket, :show),
+      replace: true
+    )
   end
 
   def handle_event("inc", _, socket) do
@@ -65,10 +65,10 @@ defmodule DemoWeb.CounterLive do
 
   def handle_event("go-boom", _, socket) do
     {:noreply,
-     live_redirect(
-       socket,
-       to: Routes.confirm_boom_live_path(socket, DemoWeb.CounterLive),
-       replace: false
+     push_patch(
+       assign(socket, show_modal: true),
+       to: Routes.counter_path(socket, :confirm_boom),
+       replace: true
      )}
   end
 
@@ -87,17 +87,9 @@ defmodule DemoWeb.CounterLive do
         socket
       ) do
     {:noreply,
-     live_redirect(socket,
-       to: Routes.live_path(socket, DemoWeb.CounterLive),
+     push_redirect(socket,
+       to: Routes.counter_path(socket, :show),
        replace: true
      )}
-  end
-
-  defp last_path_segment(uri) do
-    uri
-    |> URI.parse()
-    |> Map.get(:path)
-    |> String.split("/", trim: true)
-    |> List.last()
   end
 end

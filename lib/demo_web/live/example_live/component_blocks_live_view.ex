@@ -15,7 +15,7 @@ defmodule DemoWeb.ComponentBlocksLiveView do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     {:ok, socket}
   end
 

@@ -1,14 +1,13 @@
 defmodule DemoWeb.Router do
   use DemoWeb, :router
-  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug Phoenix.LiveView.Flash
+    plug :fetch_live_flash
+    plug :put_root_layout, {DemoWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :put_layout, {DemoWeb.LayoutView, :app}
   end
 
   pipeline :api do
@@ -18,15 +17,11 @@ defmodule DemoWeb.Router do
   scope "/", DemoWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", PageLive, :index
 
-    live "/counter", CounterLive
+    live "/counter", CounterLive, :show
 
-    live "/counter/confirm-boom", CounterLive, as: "confirm_boom_live"
-
-    live "/counter-with-set", CounterLiveWithSetForm
-
-    live "/counter-with-set/set-counter", CounterLiveWithSetForm, as: "set_counter_live"
+    live "/counter/confirm-boom", CounterLive, :confirm_boom
 
     live "/examples", LiveComponentExamples
 

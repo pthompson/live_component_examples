@@ -1,4 +1,4 @@
-import css from '../css/app.css'
+import "../css/app.scss"
 import 'phoenix_html'
 import {
   Socket
