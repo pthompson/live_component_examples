@@ -87,7 +87,7 @@ defmodule DemoWeb.CounterLive do
         socket
       ) do
     {:noreply,
-     push_redirect(socket,
+     push_patch(socket,
        to: Routes.counter_path(socket, :show),
        replace: true
      )}
